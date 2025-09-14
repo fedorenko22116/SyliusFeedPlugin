@@ -39,7 +39,12 @@ final class RegisterFilesystemPass implements CompilerPassInterface
                 throw new InvalidArgumentException(sprintf('No service definition exists with id "%s"', $parameterValue));
             }
 
-            $definitionClass = $container->getDefinition($parameterValue)->getClass();
+            $definition = $container->getDefinition($parameterValue);
+            if ($definition->getClass() === null && $definition->getParent()) {
+                $definition = $container->getDefinition($definition->getParent());
+            }
+
+            $definitionClass = $definition->getClass();
             Assert::notNull($definitionClass);
 
             if (interface_exists(FilesystemInterface::class)) {
