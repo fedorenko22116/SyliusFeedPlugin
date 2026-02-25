@@ -9,6 +9,7 @@ use League\Flysystem\FilesystemInterface;
 use League\Flysystem\FilesystemOperator;
 use RuntimeException;
 use Symfony\Component\Config\Definition\Exception\InvalidDefinitionException;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Webmozart\Assert\Assert;
@@ -40,7 +41,7 @@ final class RegisterFilesystemPass implements CompilerPassInterface
             }
 
             $definition = $container->getDefinition($parameterValue);
-            if ($definition->getClass() === null && $definition->getParent()) {
+            if ($definition->getClass() === null && $definition instanceof ChildDefinition) {
                 $definition = $container->getDefinition($definition->getParent());
             }
 
