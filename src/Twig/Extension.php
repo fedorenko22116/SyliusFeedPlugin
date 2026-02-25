@@ -9,6 +9,8 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -42,10 +44,17 @@ final class Extension extends AbstractExtension
 
     public function generateFeedUrl(FeedInterface $feed, ChannelInterface $channel, LocaleInterface $locale): string
     {
-        $path = $this->urlGenerator->generate('setono_sylius_feed_shop_feed_show', [
-            '_locale' => $locale->getCode(),
-            'code' => $feed->getCode(),
-        ]);
+        $params = ['code' => $feed->getCode()];
+
+        // Only pass _locale if the route has it as a parameter
+        if ($this->urlGenerator instanceof RouterInterface) {
+            $route = $this->urlGenerator->getRouteCollection()->get('setono_sylius_feed_shop_feed_show');
+            if (null !== $route && str_contains($route->getPath(), '{_locale}')) {
+                $params['_locale'] = $locale->getCode();
+            }
+        }
+
+        $path = $this->urlGenerator->generate('setono_sylius_feed_shop_feed_show', $params);
 
         // todo maybe inject request context into router instead to 'make it right'
         return sprintf('%s://%s%s', $this->getScheme(), (string) $channel->getHostname(), $path);

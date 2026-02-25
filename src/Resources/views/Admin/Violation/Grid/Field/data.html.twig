@@ -1,9 +1,4 @@
-<div class="ui accordion">
-    <div class="title">
-        <i class="dropdown icon"></i>
-        {{ 'sylius.ui.view'|trans }}
-    </div>
-    <div class="content">
-        <pre>{{ data }}</pre>
-    </div>
-</div>
+<details>
+    <summary>{{ 'sylius.ui.view'|trans }}</summary>
+    <pre class="mt-2">{{ data }}</pre>
+</details>

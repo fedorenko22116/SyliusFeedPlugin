@@ -1,18 +1,21 @@
-{# @var \Setono\SyliusFeedPlugin\Model\FeedInterface feed #}
-
-<h1 class="ui header">
-    <i class="circular cart icon"></i>
-    <div class="content">
-        {{ 'setono_sylius_feed.ui.feed'|trans }} {{ feed.name }}
-        <div class="sub header">
-            <div class="ui horizontal divided list">
-                <div class="item">
-                    {{ 'setono_sylius_feed.ui.feed_type'|trans ~ ': ' ~ feed.feedType }} {# todo output the label of the feed type #}
-                </div>
-                <div class="item">
-                    <div class="ui label">{{ ('setono_sylius_feed.ui.' ~ feed.state)|trans }}</div>
-                </div>
-            </div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="mb-1">
+            {{ 'setono_sylius_feed.ui.feed'|trans }} {{ feed.name }}
+        </h1>
+        <div class="text-muted">
+            {{ 'setono_sylius_feed.ui.feed_type'|trans }}: {{ feed.feedType }}
+            <span class="badge bg-{% if feed.state == 'ready' %}success{% elseif feed.state == 'processing' %}warning{% elseif feed.state == 'error' %}danger{% else %}secondary{% endif %} ms-2">
+                {{ ('setono_sylius_feed.ui.' ~ feed.state)|trans }}
+            </span>
         </div>
     </div>
-</h1>
+    <div class="d-flex gap-2">
+        {% set menu = knp_menu_get('setono_sylius_feed.admin.feed.show', [], {'feed': feed}) %}
+        {% for child in menu.children %}
+            <a href="{{ child.uri }}" class="btn btn-{% if child.name == 'generate' %}primary{% else %}outline-secondary{% endif %}">
+                {{ child.label|trans }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

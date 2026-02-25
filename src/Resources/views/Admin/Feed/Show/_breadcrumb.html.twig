@@ -1,10 +1,7 @@
-{% import '@SyliusAdmin/Macro/breadcrumb.html.twig' as breadcrumb %}
-
-{% set breadcrumbs = [
-    { label: 'sylius.ui.administration'|trans, url: path('sylius_admin_dashboard') },
-    { label: 'setono_sylius_feed.ui.feeds'|trans, url: path('setono_sylius_feed_admin_feed_index') },
-    { label: '#'~feed.id }
-]
-%}
-
-{{ breadcrumb.crumble(breadcrumbs) }}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('sylius_admin_dashboard') }}">{{ 'sylius.ui.dashboard'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('setono_sylius_feed_admin_feed_index') }}">{{ 'setono_sylius_feed.ui.feeds'|trans }}</a></li>
+        <li class="breadcrumb-item active">#{{ feed.id }}</li>
+    </ol>
+</nav>
