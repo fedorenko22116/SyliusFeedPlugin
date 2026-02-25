@@ -10,9 +10,9 @@
 
         <div class="page-body">
             <div class="container-xl">
-                {% include '@SetonoSyliusFeedPlugin/Admin/Feed/Show/_breadcrumb.html.twig' %}
-
                 {% include '@SetonoSyliusFeedPlugin/Admin/Feed/Show/_header.html.twig' %}
+
+                {% include '@SetonoSyliusFeedPlugin/Admin/Feed/Show/_breadcrumb.html.twig' %}
 
                 {% if workflow_has_marked_place(feed, constant('Setono\\SyliusFeedPlugin\\Workflow\\FeedGraph::STATE_READY')) or workflow_has_marked_place(feed, constant('Setono\\SyliusFeedPlugin\\Workflow\\FeedGraph::STATE_PROCESSING')) %}
                     <div class="card mb-3">
